@@ -14,7 +14,7 @@ vehicle.search = async (req, res) => {
   try {
     const { query } = req;
     let keyword = "%%";
-    if (query.vehicle_name) keyword = `%${query.vehicle_name}%`;
+    if (query.name) keyword = `%${query.name}%`;
     const result = await models.search(keyword);
     return res.status(200).json(result);
   } catch (error) {
@@ -33,7 +33,7 @@ vehicle.create = async (req, res) => {
 
 vehicle.delet = async (req, res) => {
   try {
-    const result = await models.delet(req.body);
+    const result = await models.delet(req.params);
     return res.status(200).json(result);
   } catch (error) {
     return res.send(error);

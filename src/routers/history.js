@@ -10,6 +10,6 @@ historyRouter.patch("/update", ctrls.update);
 // POST NEW HISTORY
 historyRouter.post("/newhistory", ctrls.create);
 // DELET HISTORY
-historyRouter.delete("/delet", ctrls.delet);
+historyRouter.delete("/:id", ctrls.delet);
 
 module.exports = historyRouter;

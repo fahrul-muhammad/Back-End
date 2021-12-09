@@ -10,19 +10,20 @@ Users.GetAll = async (req, res) => {
   }
 };
 
-Users.GetByFirstName = async (req, res) => {
+Users.GetByid = async (req, res) => {
   try {
-    const { firstname } = req.params;
-    const result = await models.GetByFirstName(firstname.toLocaleLowerCase());
+    const { id } = req.params;
+    const result = await models.GetByFirstName(id);
     return res.status(200).json(result);
   } catch (error) {
-    return res.send(error);
+    return res.status(500).json(err);
   }
 };
 
 Users.Update = async (req, res) => {
   try {
-    const { id, firstname } = req.body;
+    const { id } = req.params;
+    const { firstname } = req.body;
     const result = await models.Update(id, firstname);
     return res.status(200).json(result);
   } catch (error) {
@@ -41,7 +42,8 @@ Users.Create = async (req, res) => {
 
 Users.Delete = async (req, res) => {
   try {
-    const result = await models.Delete(req.body.id);
+    const { id } = req.params;
+    const result = await models.Delete(id);
     return res.status(200).json(result);
   } catch (error) {
     return res.send(error);

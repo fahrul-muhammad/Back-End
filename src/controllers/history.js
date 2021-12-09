@@ -40,7 +40,7 @@ history.create = async (req, res) => {
 
 history.delet = async (req, res) => {
   try {
-    const result = await models.delet(req.body);
+    const result = await models.delet(req.params);
     return res.status(200).json(result);
   } catch (error) {
     return res.send(error);

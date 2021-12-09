@@ -1,18 +1,18 @@
 const express = require("express");
 const vehicleRouter = express.Router();
-const ctrls = require("../controllers/vehicle");
+const controllers = require("../controllers/vehicle");
 
 // Get All data Vehicle from database
-vehicleRouter.get("/", ctrls.getall);
+vehicleRouter.get("/", controllers.getall);
 // search by keyword
-vehicleRouter.get("/search", ctrls.search);
+vehicleRouter.get("/search", controllers.search);
 // POST NEW VEHICLE
-vehicleRouter.post("/newvehicle", ctrls.create);
+vehicleRouter.post("/newvehicle", controllers.create);
 // DELET
-vehicleRouter.delete("/delet", ctrls.delet);
+vehicleRouter.delete("/:id", controllers.delet);
 // UPDATE
-vehicleRouter.patch("/update", ctrls.update);
+vehicleRouter.patch("/update", controllers.update);
 // get all vehicle by category / pathparams
-vehicleRouter.get("/:category", ctrls.searchByCategory);
+vehicleRouter.get("/:category", controllers.searchByCategory);
 
 module.exports = vehicleRouter;
