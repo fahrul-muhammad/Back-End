@@ -34,25 +34,26 @@ history.getrating = (rating) => {
 
 history.update = (data) => {
   return new Promise((resolve, reject) => {
-    const { id, vehicle_name, date, prepayment, hasbeen_returned, user_id, rating } = data;
+    const { vehicle_id, date, prepayment, status_id, user_id, rating, id } = data;
     const sqlQuery = `
     UPDATE vehicle_rental.history
-    SET history.vehicle_name = "${vehicle_name}", history.date = "${date}", history.prepayment = ${prepayment}, history.hasbeen_returned = "${hasbeen_returned}", history.user_id = ${user_id}, history.rating = ${rating}
-    WHERE history.id = ${id}`;
-    database.query(sqlQuery, (err, result) => {
+    SET history.vehicle_id = ?, history.date = ?, history.prepayment = ?, history.status_id = ?, history.user_id = ?, history.rating = ?
+    WHERE history.id=?`;
+    database.query(sqlQuery, [vehicle_id, date, prepayment, status_id, user_id, rating, id], (err, result) => {
+      console.log(id, vehicle_id, date, prepayment, status_id, user_id, rating);
       if (err) return reject(err);
-      resolve(result);
+      resolve({ pesan: "perubahan data berhasil", result });
     });
   });
 };
 
 history.create = (data) => {
   return new Promise((resolve, reject) => {
-    const { vehicle_name, date, prepayment, hasbeen_returned, user_id, rating } = data;
-    const sqlQuery = `INSERT INTO vehicle_rental.history (vehicle_name, date, prepayment, hasbeen_returned, user_id, rating) VALUES ("${vehicle_name}","${date}",${prepayment},"${hasbeen_returned}", ${user_id}, ${rating})`;
-    database.query(sqlQuery, (err, result) => {
+    const { vehicle_id, date, prepayment, status_id, user_id, rating } = data;
+    const sqlQuery = `INSERT INTO vehicle_rental.history SET vehicle_id=?, date=?, prepayment=?, status_id=?, user_id=?, rating=?`;
+    database.query(sqlQuery, [vehicle_id, date, prepayment, status_id, user_id, rating], (err, result) => {
       if (err) return reject(err);
-      resolve({ pesan: "pemasukan data berhasil", result: { id: result.insertId, vehicle_name, date, prepayment, hasbeen_returned, user_id, rating } });
+      resolve({ pesan: "pemasukan data berhasil", result: { id: result.insertId, vehicle_id, date, prepayment, status_id, user_id, rating } });
     });
   });
 };

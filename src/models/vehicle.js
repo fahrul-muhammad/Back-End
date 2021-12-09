@@ -28,9 +28,9 @@ vehicle.search = (keyword) => {
 
 vehicle.create = (data) => {
   return new Promise((resolve, reject) => {
-    const { vehicle_name, vehicle_price, vehicle_category } = data;
-    const sqlQuery = `INSERT INTO vehicle_rental.vehicle (vehicle_name,vehicle_price,vehicle_category) VALUES ("${vehicle_name}","${vehicle_price}",${vehicle_category})`;
-    database.query(sqlQuery, (err, result) => {
+    const { name, price, category } = data;
+    const sqlQuery = `INSERT INTO vehicle_rental.vehicle  SET name=?,price=?,category=?`;
+    database.query(sqlQuery, [name, price, category], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });

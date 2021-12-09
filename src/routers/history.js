@@ -8,7 +8,7 @@ historyRouter.get("/:rating", ctrls.getrating);
 // UPDATE HISTORY
 historyRouter.patch("/update", ctrls.update);
 // POST NEW HISTORY
-historyRouter.post("/newhistory", ctrls.create);
+historyRouter.post("/", ctrls.create);
 // DELET HISTORY
 historyRouter.delete("/:id", ctrls.delet);
 

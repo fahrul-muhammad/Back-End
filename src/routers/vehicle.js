@@ -7,7 +7,7 @@ vehicleRouter.get("/", controllers.getall);
 // search by keyword
 vehicleRouter.get("/search", controllers.search);
 // POST NEW VEHICLE
-vehicleRouter.post("/newvehicle", controllers.create);
+vehicleRouter.post("/", controllers.create);
 // DELET
 vehicleRouter.delete("/:id", controllers.delet);
 // UPDATE

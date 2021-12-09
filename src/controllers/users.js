@@ -13,7 +13,7 @@ Users.GetAll = async (req, res) => {
 Users.GetByid = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await models.GetByFirstName(id);
+    const result = await models.GetByid(id);
     return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json(err);
