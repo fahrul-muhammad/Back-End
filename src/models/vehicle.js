@@ -1,10 +1,12 @@
+const { query } = require("express");
 const database = require("../config/database");
+const mysql = require("mysql");
 const vehicle = {};
 
 vehicle.GetAll = () => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category" 
-      FROM vehicle_rental.vehicle 
+    const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category"
+      FROM vehicle_rental.vehicle
       JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id`;
     database.query(sqlQuery, (err, result) => {
       if (err) return reject(err);

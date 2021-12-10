@@ -1,6 +1,7 @@
 const express = require("express");
 const usersRouter = express.Router();
 const controllers = require("../controllers/users");
+const validate = require("../middlewares/jwtValidate");
 
 usersRouter.get("/", controllers.GetAll);
 usersRouter.post("/", controllers.Create);

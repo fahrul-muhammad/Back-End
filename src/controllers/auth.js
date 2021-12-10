@@ -22,12 +22,10 @@ auth.signIn = async (req, res) => {
     if (!users) {
       return res.status(200).json({ pesan: "Silahkan daftra" });
     }
-
     const isAuth = await hash.validatePassword(password, users.password);
     if (!isAuth) {
       return res.status(200).json({ pesan: "Password salah" });
     }
-
     const tokens = jwt.CreateTokens({ role: users.role_id, email });
     return res.status(200).json({ pesan: "Berhasil login", token: tokens });
   } catch (error) {

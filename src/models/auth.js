@@ -1,11 +1,10 @@
 const database = require("../config/database");
 const auth = {};
 
-auth.SignUp = (data) => {
+auth.SignUp = (body) => {
   return new Promise((resolve, reject) => {
-    const { firstname, lastname, gender, email, phone_number, DoB, address, password, role_id } = data;
-    const sqlQuery = `INSERT INTO vehicle_rental.users SET firstname=?, lastname=?, gender=?, email=?, phone_number=?, DoB=?, address=?, password=?, role_id=?`;
-    database.query(sqlQuery, [firstname, lastname, gender, email, phone_number, DoB, address, password, role_id], (err, result) => {
+    const sqlQuery = `INSERT INTO vehicle_rental.users SET ?`;
+    database.query(sqlQuery, [body], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });
