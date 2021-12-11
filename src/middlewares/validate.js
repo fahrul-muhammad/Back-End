@@ -1,6 +1,6 @@
 const val = {};
-const { token } = require("morgan");
-const helpers = require("../helpers/genToken");
+const jwt = require("jsonwebtoken");
+const database = require("../config/database");
 
 val.signUp = (req, res, next) => {
   const { body } = req;
@@ -26,7 +26,27 @@ val.usersValidate = (req, res, next) => {
     token = req.headers.token.split(" ")[1];
   }
   if (token.length == 0) return res.status(401).json({ pesan: "harus memiliki token untuk mengakses endpoint ini" });
+  jwt.verify(token, process.env.JWT_KEYS, (err, payload) => {
+    if (err) return res.status(403).json({ err });
+  });
   next();
 };
+
+// val.checkEmail = (req, res, next) => {
+//   let val;
+//   const sqlQuery = `SELECR * FROM vehicle_rental.users.email`;
+//   database.query(sqlQuery, (err, result) => {
+//     if (err) return err;
+//     val += result;
+//     res.status(200).json({ val });
+//   });
+//   const { email } = req.body;
+//   for (let i = 0; i < val; i++) {
+//     if (email[i] === val) {
+//       return res.json({ pesan: "email sudah terdaftar" });
+//     }
+//   }
+//   next();
+// };
 
 module.exports = val;

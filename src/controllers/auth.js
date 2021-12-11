@@ -20,11 +20,11 @@ auth.signIn = async (req, res) => {
     const { email, password } = req.body;
     const users = await authModel.signIn(email);
     if (!users) {
-      return res.status(200).json({ pesan: "Silahkan daftra" });
+      return res.status(200).json({ pesan: "Email belum terdaftar, silahkan daftar" });
     }
     const isAuth = await hash.validatePassword(password, users.password);
     if (!isAuth) {
-      return res.status(200).json({ pesan: "Password salah" });
+      return res.status(200).json({ pesan: "Email atau Password salah" });
     }
     const tokens = jwt.CreateTokens({ role: users.role_id, email });
     if (users.role_id === 1) {

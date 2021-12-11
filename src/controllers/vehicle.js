@@ -3,7 +3,8 @@ const vehicle = {};
 
 vehicle.getall = async (req, res) => {
   try {
-    const result = await models.GetAll();
+    const { query } = req;
+    const result = await models.getAllPaginated(query);
     return res.status(200).json(result);
   } catch (error) {
     return res.send(error);
