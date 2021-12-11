@@ -1,9 +1,10 @@
 const express = require("express");
 const usersRouter = express.Router();
 const controllers = require("../controllers/users");
-const validate = require("../middlewares/jwtValidate");
+const middleware = require("../middlewares/validate");
+const helpers = require("../helpers/genToken");
 
-usersRouter.get("/", controllers.GetAll);
+usersRouter.get("/", middleware.usersValidate, controllers.GetAll);
 usersRouter.post("/", controllers.Create);
 usersRouter.get("/:id", controllers.GetByid);
 usersRouter.patch("/:id", controllers.Update);
