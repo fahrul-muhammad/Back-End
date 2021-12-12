@@ -14,6 +14,7 @@ server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(logger);
 server.use(mainRouter);
+server.use(express.static("public/img"));
 
 server.listen(port, () => {
   console.log(`server telah berjalan di port ${port}`);

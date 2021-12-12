@@ -42,3 +42,6 @@ JOIN vehicle_rental.vehicle_category ON vehicle.vehicle_category = vehicle_categ
 //         category_id: Number
 //     }
 // }
+
+const name = Date.now().toString();
+console.log(name);

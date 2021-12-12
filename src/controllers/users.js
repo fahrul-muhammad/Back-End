@@ -50,4 +50,11 @@ Users.Delete = async (req, res) => {
   }
 };
 
+Users.profilePic = (req, res) => {
+  if (req.file === undefined) {
+    return res.status(401).json({ pesan: "file tidak sesuai requriment" });
+  }
+  res.status(200).json({ pesan: "upload berhasil", url: req.file });
+};
+
 module.exports = Users;
