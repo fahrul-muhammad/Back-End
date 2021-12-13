@@ -2,18 +2,6 @@ const database = require("../config/database");
 const mysql = require("mysql");
 const vehicle = {};
 
-// vehicle.GetAll = () => {
-//   return new Promise((resolve, reject) => {
-//     let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category"
-//     FROM vehicle_rental.vehicle
-//     JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id`;
-//     database.query(sqlQuery, (err, result) => {
-//       if (err) return reject(err);
-//       resolve(result);
-//     });
-//   });
-// };
-
 vehicle.getAllPaginated = async (query) => {
   return new Promise((resolve, reject) => {
     let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category"
@@ -25,9 +13,9 @@ vehicle.getAllPaginated = async (query) => {
     let orderBy = "";
     if (query.by && query.by.toLowerCase() == "name") orderBy = "vehicle.name";
     if (query.by && query.by.toLowerCase() == "price") orderBy = "vehicle.price";
-    if (query.by && query.by.toLowerCase() == "category_id") orderBy = "vehicle.category_id";
+    if (query.by && query.by.toLowerCase() == "category") orderBy = "vehicle_category.name";
     if (order && orderBy) {
-      sqlQuery += `ORDER BY ? ?`;
+      sqlQuery += ` ORDER BY ? ? `;
       statement.push(mysql.raw(orderBy, mysql.raw(order)));
     }
     const countQuery = `SELECT COUNT(*) AS "count" from vehicle_rental.vehicle`;
@@ -42,8 +30,8 @@ vehicle.getAllPaginated = async (query) => {
         statement.push(limit, offset);
       }
       const meta = {
-        next: page == Math.ceil(count / limit) ? null : `/vehicle?by=id&order=asc&page=${page + 1}&limit=4`,
-        prev: page == 1 ? null : `/vehicle?by=id&order=asc&page=${page - 1}&limit=4`,
+        next: page == Math.ceil(count / limit) ? null : `/vehicle?by=${query.by}&order=asc&page=${page + 1}&limit=4`,
+        prev: page == 1 ? null : `/vehicle?by=${query.by}&order=asc&page=${page - 1}&limit=4`,
         count,
       };
       database.query(sqlQuery, statement, (err, result) => {

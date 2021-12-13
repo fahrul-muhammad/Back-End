@@ -26,13 +26,13 @@ Users.GetByid = (id) => {
   });
 };
 
-Users.Update = (id, name) => {
+Users.Update = (id, password) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `
         UPDATE vehicle_rental.users
         SET users.password =  ?
         WHERE users.id = ?`;
-    database.query(sqlQuery, [name, id], (err, result) => {
+    database.query(sqlQuery, [password, id], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });
@@ -44,6 +44,18 @@ Users.Delete = (id) => {
     const sqlQuery = `
         DELETE FROM vehicle_rental.users WHERE users.id = ?;`;
     database.query(sqlQuery, [id], (err, result) => {
+      if (err) reject(err);
+      resolve(result);
+    });
+  });
+};
+
+Users.postImg = (path, id) => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `UPDATE vehicle_rental.users
+    SET users.profilepic = ?
+    WHERE users.id = ?`;
+    database.query(sqlQuery, [path, id], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });

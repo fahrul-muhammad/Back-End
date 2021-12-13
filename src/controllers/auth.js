@@ -1,6 +1,5 @@
 const authModel = require("../models/auth");
 const hashPass = require("../helpers/hash");
-const hash = require("../helpers/hash");
 const jwt = require("../helpers/genToken");
 const auth = {};
 
@@ -27,9 +26,6 @@ auth.signIn = async (req, res) => {
       return res.status(200).json({ pesan: "Email atau Password salah" });
     }
     const tokens = jwt.CreateTokens({ role: users.role_id, email });
-    // if (users.role_id === 1) {
-    //   return res.status(200).json({ pesan: "Berhasil login", token: tokens });
-    // }
     return res.status(200).json({ pesan: "Anda Berhasil Login", token: tokens });
   } catch (error) {
     return res.status(500).json(error);

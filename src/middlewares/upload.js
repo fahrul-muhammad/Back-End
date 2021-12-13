@@ -20,7 +20,7 @@ function fileFilter(req, file, cb) {
 }
 
 const uploads = multer({ storage, fileFilter, limits: { fileSize: 2097152 } });
-const single = uploads.single("images");
+const single = uploads.single("profilepic");
 
 function multerHandler(req, res, next) {
   single(req, res, (err) => {
