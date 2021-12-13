@@ -1,6 +1,5 @@
 const val = {};
 const jwt = require("jsonwebtoken");
-const database = require("../config/database");
 
 val.signUp = (req, res, next) => {
   const { body } = req;
@@ -20,16 +19,17 @@ val.signIn = (req, res, next) => {
   next();
 };
 
-val.usersValidate = (req, res, next) => {
-  let token = "";
-  if (req.headers.token && req.headers.token.startsWith("Bearer")) {
-    token = req.headers.token.split(" ")[1];
-  }
-  if (token.length == 0) return res.status(401).json({ pesan: "harus memiliki token untuk mengakses endpoint ini" });
-  jwt.verify(token, process.env.JWT_KEYS, (err, payload) => {
-    if (err) return res.status(403).json({ err });
-  });
-  next();
+val.ValidateToken = (roles) => {
+  return (req, res, next) => {
+    const { token } = req.headers;
+    if (token.length == 0) return res.status(401).json({ pesan: "harus memiliki token untuk mengakses endpoint ini" });
+    jwt.verify(token, process.env.JWT_KEYS, (err, payload) => {
+      if (err) return res.status(403).json({ err });
+      console.log(roles);
+      if (roles != payload.role) return res.status(401).json({ pesan: "anda tidak memiliki akses untuk endpoint ini" });
+    });
+    next();
+  };
 };
 
 // val.checkEmail = (req, res, next) => {

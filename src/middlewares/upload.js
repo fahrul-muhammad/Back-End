@@ -24,7 +24,6 @@ const single = uploads.single("images");
 
 function multerHandler(req, res, next) {
   single(req, res, (err) => {
-    console.log(err.code);
     if (err && err.code === "LIMIT_FILE_SIZE") {
       return res.status(500).json({ pesan: "file melebihi size" });
     }

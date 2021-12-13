@@ -31,15 +31,6 @@ Users.Update = async (req, res) => {
   }
 };
 
-Users.Create = async (req, res) => {
-  try {
-    const result = await models.Create(req.body);
-    return res.status(200).json(result);
-  } catch (error) {
-    return res.send(error);
-  }
-};
-
 Users.Delete = async (req, res) => {
   try {
     const { id } = req.params;

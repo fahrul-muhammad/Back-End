@@ -1,15 +1,16 @@
 const express = require("express");
 const historyRouter = express.Router();
-const ctrls = require("../controllers/history");
+const controllers = require("../controllers/history");
+const validateToken = require("../middlewares/validate");
 
-historyRouter.get("/", ctrls.getall);
+historyRouter.get("/", validateToken.ValidateToken("1"), controllers.getall);
 // POPULAR VEHICLE BY RATING
-historyRouter.get("/:rating", ctrls.getrating);
+historyRouter.get("/:rating", controllers.getrating);
 // UPDATE HISTORY
-historyRouter.patch("/update", ctrls.update);
+historyRouter.patch("/update", controllers.update);
 // POST NEW HISTORY
-historyRouter.post("/", ctrls.create);
+historyRouter.post("/", controllers.create);
 // DELET HISTORY
-historyRouter.delete("/:id", ctrls.delet);
+historyRouter.delete("/:id", validateToken.ValidateToken("1"), controllers.delet);
 
 module.exports = historyRouter;

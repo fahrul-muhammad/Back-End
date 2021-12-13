@@ -1,5 +1,4 @@
 const database = require("../config/database");
-const { profilePic } = require("../controllers/users");
 const Users = {};
 
 Users.GetAll = () => {
@@ -40,17 +39,6 @@ Users.Update = (id, name) => {
   });
 };
 
-Users.Create = (data) => {
-  return new Promise((resolve, reject) => {
-    const { firstname, lastname, gender, email, phone_number, DoB, address, password, role_id } = data;
-    const sqlQuery = `INSERT INTO vehicle_rental.users SET firstname=?, lastname=?, gender=?, email=?, phone_number=?, DoB=?, address=?, password=?, role_id=?`;
-    database.query(sqlQuery, [firstname, lastname, gender, email, phone_number, DoB, address, password, role_id], (err, result) => {
-      if (err) reject(err);
-      resolve(result);
-    });
-  });
-};
-
 Users.Delete = (id) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `
@@ -61,27 +49,5 @@ Users.Delete = (id) => {
     });
   });
 };
-
-// Users.profilePic = (body) => {
-//   return new Promise((resolve, reject) => {
-//     const sqlQuery = `SELECT * FROM vehicle_rental.users WHERE users.id = ?`;
-//     database.query(sqlQuery, [body.id], (err, result) => {
-//       if (err) return reject(err);
-//     });
-//   });
-// };
-
-/* 
-let imgSrc = `http://localhost:8000/users/profilepic` + body.file.filename;
-    const idQuery = `SELECT * FROM vehicle_rental.users WHERE users.id = ?`;
-    database.query(idQuery, [body.file.id], (err, result) => {
-      if (err) return reject(err);
-      const sqlQuery = `INSERT INTO vehicle_rental.users (users.profilepic) SET users.profilepic=?`;
-      database.query(sqlQuery, [imgSrc], (err) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
-*/
 
 module.exports = Users;
