@@ -21,7 +21,7 @@ auth.signIn = async (req, res) => {
     if (!users) {
       return res.status(200).json({ pesan: "Email belum terdaftar, silahkan daftar" });
     }
-    const isAuth = await hash.validatePassword(password, users.password);
+    const isAuth = await hashPass.validatePassword(password, users.password);
     if (!isAuth) {
       return res.status(200).json({ pesan: "Email atau Password salah" });
     }

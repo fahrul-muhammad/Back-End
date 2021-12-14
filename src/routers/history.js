@@ -5,7 +5,7 @@ const validateToken = require("../middlewares/validate");
 
 historyRouter.get("/", validateToken.ValidateToken("1"), controllers.getall);
 // POPULAR VEHICLE BY RATING
-historyRouter.get("/:rating", controllers.getrating);
+historyRouter.get("/popular", controllers.GetPopular);
 // UPDATE HISTORY
 historyRouter.patch("/update", controllers.update);
 // POST NEW HISTORY

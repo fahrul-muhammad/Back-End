@@ -10,6 +10,15 @@ val.signUp = (req, res, next) => {
   next();
 };
 
+val.updateDataUsers = (req, res, next) => {
+  const { body } = req;
+  const signUpBody = ["firstname", "lastname", "gender", "email", "phone_number", "DoB", "address", "password", "role_id"];
+  const bodyProperty = Object.keys(body);
+  const isBodyValid = signUpBody.filter((property) => !bodyProperty.includes(property)).length == 0 ? true : false;
+  if (!isBodyValid) return res.status(500).json({ pesan: "invalid body" });
+  next();
+};
+
 val.signIn = (req, res, next) => {
   const { body } = req;
   const signInBody = ["email", "password"];

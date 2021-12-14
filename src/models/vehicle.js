@@ -16,7 +16,7 @@ vehicle.getAllPaginated = async (query) => {
     if (query.by && query.by.toLowerCase() == "category") orderBy = "vehicle_category.name";
     if (order && orderBy) {
       sqlQuery += ` ORDER BY ? ? `;
-      statement.push(mysql.raw(orderBy, mysql.raw(order)));
+      statement.push(mysql.raw(orderBy), mysql.raw(order));
     }
     const countQuery = `SELECT COUNT(*) AS "count" from vehicle_rental.vehicle`;
     database.query(countQuery, (err, result) => {

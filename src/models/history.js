@@ -17,15 +17,14 @@ history.getall = () => {
 };
 
 // popular vehicle by rating
-history.getrating = (rating) => {
+history.GetPopular = () => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT history.id, users.firstname AS "user",vehicle.name AS "vehicle", history.date, history.prepayment, status.name AS "status", history.rating
-    FROM vehicle_rental.history 
-    INNER JOIN vehicle_rental.users ON history.user_id = users.id
-    INNER JOIN vehicle_rental.vehicle ON history.vehicle_id = vehicle.id
-    INNER JOIN vehicle_rental.status ON history.status_id = vehicle_rental.status.id
-    ORDER BY vehicle_rental.history.rating ?`;
-    database.query(sqlQuery, [mysql.raw(rating)], (err, result) => {
+    const sqlQuery = `SELECT vehicle_rental.vehicle.name AS "Kendaraan", COUNT(history.vehicle_id) AS "Jumlah pengguna", AVG(history.rating) AS " rata-rata rating pengguna"
+    FROM vehicle_rental.history
+    JOIN vehicle_rental.vehicle ON vehicle.id = history.vehicle_id
+    GROUP BY vehicle_id
+    ORDER BY COUNT(history.vehicle_id) DESC`;
+    database.query(sqlQuery, (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });

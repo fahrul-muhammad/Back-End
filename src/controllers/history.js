@@ -10,10 +10,9 @@ history.getall = async (req, res) => {
   }
 };
 
-history.getrating = async (req, res) => {
+history.GetPopular = async (req, res) => {
   try {
-    const { rating } = req.params;
-    const result = await models.getrating(rating);
+    const result = await models.GetPopular();
     return res.status(200).json(result);
   } catch (error) {
     return res.send(error);

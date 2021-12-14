@@ -26,7 +26,7 @@ Users.GetByid = (id) => {
   });
 };
 
-Users.Update = (id, password) => {
+Users.UpdatePass = (id, password) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `
         UPDATE vehicle_rental.users
@@ -56,6 +56,18 @@ Users.postImg = (path, id) => {
     SET users.profilepic = ?
     WHERE users.id = ?`;
     database.query(sqlQuery, [path, id], (err, result) => {
+      if (err) reject(err);
+      resolve(result);
+    });
+  });
+};
+
+Users.UpdateData = (body, id) => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `UPDATE vehicle_rental.users
+     SET ?
+     WHERE users.id = ?;`;
+    database.query(sqlQuery, [body, id], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });
