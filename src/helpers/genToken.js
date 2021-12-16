@@ -7,7 +7,7 @@ jToken.CreateTokens = (users) => {
     email: users.email,
   };
 
-  const tokens = jwt.sign(payloads, process.env.JWT_KEYS, { expiresIn: "1d" });
+  const tokens = jwt.sign(payloads, process.env.JWT_KEYS, { expiresIn: "1m" });
   return tokens;
 };
 

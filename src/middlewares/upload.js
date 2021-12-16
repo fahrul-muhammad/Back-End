@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now().toString();
-    cb(null, uniqueSuffix + "-" + file.originalname);
+    cb(null, uniqueSuffix + "-" + file.originalname); //ubah original name
   },
 });
 
@@ -19,13 +19,13 @@ function fileFilter(req, file, cb) {
   }
 }
 
-const uploads = multer({ storage, fileFilter, limits: { fileSize: 2097152 } });
+const uploads = multer({ storage, fileFilter, limits: { fileSize: 2 * 1024 * 1024 } });
 const single = uploads.single("profilepic");
 
 function multerHandler(req, res, next) {
   single(req, res, (err) => {
     if (err && err.code === "LIMIT_FILE_SIZE") {
-      return res.status(500).json({ pesan: "file melebihi size" });
+      return res.status(400).json({ pesan: "file melebihi size" });
     }
     next();
   });

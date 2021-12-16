@@ -56,12 +56,12 @@ Users.Delete = async (req, res) => {
 Users.profilePic = async (req, res) => {
   try {
     if (req.file === undefined) {
-      return res.status(401).json({ pesan: "file harus ber tipe PNG,JPG,JPEG" });
+      return res.status(400).json({ pesan: "file harus ber tipe PNG,JPG,JPEG" });
     }
-    const { path } = req.file;
+    const { path, filename } = req.file;
     const { id } = req.query;
-    const result = await models.postImg(path, id);
-    return res.status(200).json({ pesan: "upload berhasil", result });
+    const result = await models.postImg(filename, id);
+    return res.status(200).json({ pesan: "upload berhasil", result: { filename, path } });
   } catch (error) {
     return res.send(error);
   }

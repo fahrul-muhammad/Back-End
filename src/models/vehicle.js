@@ -7,13 +7,12 @@ vehicle.getAllPaginated = async (query) => {
     let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category"
   FROM vehicle_rental.vehicle
   JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id`;
-
     const statement = [];
     const order = query.order;
     let orderBy = "";
-    if (query.by && query.by.toLowerCase() == "name") orderBy = "vehicle.name";
-    if (query.by && query.by.toLowerCase() == "price") orderBy = "vehicle.price";
-    if (query.by && query.by.toLowerCase() == "category") orderBy = "vehicle_category.name";
+    if (query.sorting && query.sorting.toLowerCase() == "name") orderBy = "vehicle.name";
+    if (query.sorting && query.sorting.toLowerCase() == "price") orderBy = "vehicle.price";
+    if (query.sorting && query.sorting.toLowerCase() == "category") orderBy = "vehicle_category.name";
     if (order && orderBy) {
       sqlQuery += ` ORDER BY ? ? `;
       statement.push(mysql.raw(orderBy), mysql.raw(order));
@@ -30,8 +29,8 @@ vehicle.getAllPaginated = async (query) => {
         statement.push(limit, offset);
       }
       const meta = {
-        next: page == Math.ceil(count / limit) ? null : `/vehicle?by=${query.by}&order=asc&page=${page + 1}&limit=4`,
-        prev: page == 1 ? null : `/vehicle?by=${query.by}&order=asc&page=${page - 1}&limit=4`,
+        next: page == Math.ceil(count / limit) ? null : `/vehicle?sorting=${query.sorting}&order=${order}&page=${page + 1}&limit=${limit}`,
+        prev: page == 1 ? null : `/vehicle?sorting=${query.sorting}&order=${order}&page=${page - 1}&limit=${limit}`,
         count,
       };
       database.query(sqlQuery, statement, (err, result) => {
