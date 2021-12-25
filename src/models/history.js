@@ -4,7 +4,7 @@ const history = {};
 
 history.getall = () => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT history.id, users.firstname AS "user",vehicle.name AS "vehicle", history.date, history.prepayment, status.name AS "status", history.rating
+    const sqlQuery = `SELECT history.id, users.name AS "user",vehicle.name AS "vehicle", history.date, history.prepayment, status.name AS "status", history.rating
     FROM vehicle_rental.history 
     INNER JOIN vehicle_rental.users ON history.user_id = users.id
     INNER JOIN vehicle_rental.vehicle ON history.vehicle_id = vehicle.id

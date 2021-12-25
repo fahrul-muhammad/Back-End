@@ -6,9 +6,9 @@ const upload = require("../middlewares/upload");
 
 usersRouter.get("/", middleware.ValidateToken("1"), controllers.GetAll);
 usersRouter.get("/:id", middleware.ValidateToken("1"), controllers.GetByid);
-usersRouter.patch("/", middleware.updateDataUsers, controllers.UpdateData);
+usersRouter.patch("/", upload, controllers.UpdateData);
 usersRouter.patch("/changePass", controllers.UpdatePass);
 usersRouter.delete("/:id", middleware.ValidateToken("1"), controllers.Delete);
-usersRouter.post("/profilepic", upload, controllers.profilePic);
+usersRouter.patch("/profilepic", upload, controllers.profilePic);
 
 module.exports = usersRouter;

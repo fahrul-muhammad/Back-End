@@ -1,9 +1,11 @@
 const database = require("../config/database");
 const Users = {};
+const mysql = require("mysql");
+const { profilePic } = require("../controllers/users");
 
 Users.GetAll = () => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT users.id, users.firstname, users.lastname, users.email, users.phone_number, users.DoB, users.address, roles.name AS "role"
+    const sqlQuery = `SELECT users.id, users.name, users.email, users.phone_number, users.DoB, users.address, roles.name AS "role"
     FROM vehicle_rental.users
     INNER JOIN vehicle_rental.roles ON users.role_id = roles.id 
     ORDER BY users.id DESC`;
@@ -62,12 +64,12 @@ Users.postImg = (path, id) => {
   });
 };
 
-Users.UpdateData = (body, id) => {
+Users.UpdateData = (data, id) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `UPDATE vehicle_rental.users
      SET ?
-     WHERE users.id = ?;`;
-    database.query(sqlQuery, [body, id], (err, result) => {
+     WHERE users.id = ?`;
+    database.query(sqlQuery, [data, id], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });
