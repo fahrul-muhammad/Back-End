@@ -8,8 +8,14 @@ vehicle.getAllPaginated = async (query) => {
   FROM vehicle_rental.vehicle
   JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id`;
     const statement = [];
-    const order = query.order;
+    let order = query.order;
     let orderBy = "";
+    if (order === undefined) {
+      order = "asc";
+    }
+    if (query.sorting === undefined) {
+      query.sorting = "name";
+    }
     if (query.sorting && query.sorting.toLowerCase() == "name") orderBy = "vehicle.name";
     if (query.sorting && query.sorting.toLowerCase() == "price") orderBy = "vehicle.price";
     if (query.sorting && query.sorting.toLowerCase() == "category") orderBy = "vehicle_category.name";
@@ -23,6 +29,7 @@ vehicle.getAllPaginated = async (query) => {
       const page = parseInt(query.page);
       const limit = parseInt(query.limit);
       const count = result[0].count;
+
       if (query.page && query.limit) {
         sqlQuery += ` LIMIT ? OFFSET ?`;
         const offset = (page - 1) * limit;
@@ -100,6 +107,16 @@ vehicle.searchByCategory = (category) => {
     database.query(sqlQuery, [category], (err, result) => {
       if (err) return reject(err);
       resolve(result);
+    });
+  });
+};
+
+vehicle.vehicleImg = (pathFile) => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `INSERT INTO vehicle_rental.vehicle_img (path_file) VALUES (?)`;
+    database.query(sqlQuery, [pathFile], (err, result) => {
+      if (err) return reject(err);
+      resolve({ pesan: "berhasil meng unggah gambar", result });
     });
   });
 };

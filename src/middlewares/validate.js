@@ -1,21 +1,11 @@
 const val = {};
+const { is } = require("express/lib/request");
 const jwt = require("jsonwebtoken");
+const res = require("../helpers/response");
 
 val.signUp = (req, res, next) => {
   const { body } = req;
   const signUpBody = ["name", "email", "password"];
-  const bodyProperty = Object.keys(body);
-  const isBodyValid = signUpBody.filter((property) => !bodyProperty.includes(property)).length == 0 ? true : false;
-  if (!isBodyValid)
-    return res.status(500).json({
-      pesan: "invalid body",
-    });
-  next();
-};
-
-val.updateDataUsers = (req, res, next) => {
-  const { body } = req;
-  const signUpBody = ["name", "email", "gender", "phone_number", "DoB", "address"];
   const bodyProperty = Object.keys(body);
   const isBodyValid = signUpBody.filter((property) => !bodyProperty.includes(property)).length == 0 ? true : false;
   if (!isBodyValid)
@@ -37,9 +27,20 @@ val.signIn = (req, res, next) => {
   next();
 };
 
-val.ValidateToken = (roles) => {
+// val.validateToken = (token) => {
+//   return (req, res, next) => {
+//     jwt.verify(token, process.env.JWT_KEYS, (err, payload) => {
+//       req.userInfo = payload;
+//       if (err) res.status(400).json({ pesan: "token tidak valid" });
+//     });
+//     next();
+//   };
+// };
+
+val.ValidateRole = (roles = []) => {
   return (req, res, next) => {
     const { token } = req.headers;
+    let isAuth = false;
     if (token.length == 0)
       return res.status(401).json({
         pesan: "harus memiliki token untuk mengakses endpoint ini",
@@ -52,13 +53,20 @@ val.ValidateToken = (roles) => {
           });
         }
       }
-      if (roles != payload.role) {
-        return res.status(403).json({
-          pesan: "anda tidak memiliki akses untuk endpoint ini",
-        });
-      }
+      roles.map((val) => {
+        if (val == payload.role) {
+          isAuth = true;
+        }
+      });
+      req.userInfo = payload;
     });
-    next();
+    if (isAuth) {
+      next();
+    } else {
+      return res.status(403).json({
+        pesan: "access denied",
+      });
+    }
   };
 };
 

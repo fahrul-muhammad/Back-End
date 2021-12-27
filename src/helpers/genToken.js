@@ -11,11 +11,6 @@ jToken.CreateTokens = (users) => {
   return tokens;
 };
 
-jToken.Validate = (tokens) => {
-  jwt.verify(tokens, process.env.JWT_KEYS, (err, payload) => {
-    if (err) return false;
-    return { users, oke: true };
-  });
-};
+jToken.Validate = (tokens) => {};
 
 module.exports = jToken;

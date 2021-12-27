@@ -43,5 +43,9 @@ JOIN vehicle_rental.vehicle_category ON vehicle.vehicle_category = vehicle_categ
 //     }
 // }
 
-const name = Date.now().toString();
-console.log(name);
+// const name = Date.now().toString();
+// console.log(name);
+
+let arrayOfStrings = ["1", "2"];
+var arrayOfNumbers = arrayOfStrings.map(Number);
+console.log(arrayOfNumbers);

@@ -2,6 +2,7 @@
 require("dotenv").config();
 const express = require("express");
 const mainRouter = require("./src/routers/main.js");
+const cors = require("cors");
 
 const server = express();
 const morgan = require("morgan");
@@ -10,6 +11,27 @@ const logger = morgan(":method :url :status :res[content-length] - :response-tim
 //local port
 const port = 8000;
 
+const whitelist = ["https://circlevehicle.netlify.app/", "http://127.0.0.1:5500/index.html", "http://localhosts:8000/"];
+server.use(
+  cors({
+    origin: function (origin, callback) {
+      console.log(origin);
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Access denied by CORS"));
+      }
+    },
+    methods: ["GET", "PATCH", "DELET", "POST"],
+  })
+);
+
+// const corsOptions = {
+//   origin: ["https://circlevehicle.netlify.app/", "http://127.0.0.1:5500/index.html", "http://localhosts:8000/"],
+//   allowedHeaders: "token",
+//   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+// };
+// server.use(cors(corsOptions));
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(logger);
