@@ -58,6 +58,7 @@ Users.UpdateData = async (req, res) => {
     if (req.file !== undefined) {
       data.profilepic = req.file.filename;
     }
+    console.log(req.file);
     // hash password if password is update
     if (data.password !== undefined) {
       data.password = await hashPass.hashPassword(data.password);
