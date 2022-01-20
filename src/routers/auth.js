@@ -6,6 +6,5 @@ const middleware = require("../middlewares/validate");
 // /auth
 authRouter.post("/", middleware.signIn, authController.signIn); // login
 authRouter.post("/signup", middleware.signUp, authController.signUp); // register
-authRouter.delete("/"); // log out
 
 module.exports = authRouter;

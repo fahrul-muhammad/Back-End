@@ -6,6 +6,7 @@ vehicle.getall = async (req, res) => {
   try {
     const { query } = req;
     const result = await models.getAllPaginated(query);
+    console.log(result);
     return response.success(res, 200, result);
   } catch (error) {
     return response.err(res, 500, error);
@@ -26,9 +27,15 @@ vehicle.search = async (req, res) => {
 
 vehicle.create = async (req, res) => {
   try {
-    const result = await models.create(req.body);
+    console.log(req.body);
+    const data = req.body;
+    const { filename } = req.files[0];
+    const image = "/" + filename;
+    data.image = image;
+    const result = await models.create(data);
     return response.success(res, 200, result);
   } catch (error) {
+    console.log(error);
     return response.err(res, 500, error);
   }
 };
@@ -44,7 +51,9 @@ vehicle.delet = async (req, res) => {
 
 vehicle.update = async (req, res) => {
   try {
-    const result = await models.update(req.body);
+    const id = req.params;
+    const data = req.body;
+    const result = await models.update(data, id);
     return response.success(res, 200, result);
   } catch (error) {
     return response.err(res, 500, error);
@@ -53,10 +62,13 @@ vehicle.update = async (req, res) => {
 
 vehicle.searchByCategory = async (req, res) => {
   try {
+    const data = "";
     const { category } = req.params;
-    const result = await models.searchByCategory(category);
+    const { query } = req;
+    const result = await models.searchByCategory({ category, query });
     return response.success(res, 200, result);
   } catch (error) {
+    console.log(error);
     return response.err(res, 500, error);
   }
 };
@@ -64,11 +76,15 @@ vehicle.searchByCategory = async (req, res) => {
 vehicle.vehicleImg = async (req, res) => {
   try {
     const photos = req.files;
-    let dataImg = {};
+    console.log(photos);
+    const { id } = req.params;
+    console.log(id);
+    let dataImg = [];
     for (let i = 0; i < photos.length; i++) {
       dataImg += photos[i].filename + " ";
     }
-    const result = await models.vehicleImg(dataImg);
+    console.log(dataImg);
+    const result = await models.vehicleImg(dataImg, id);
     return response.success(res, 200, result);
   } catch (error) {
     return response.err(res, 500, error);

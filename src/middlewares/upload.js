@@ -21,10 +21,11 @@ function fileFilter(req, file, cb) {
 
 const uploads = multer({ storage, fileFilter, limits: { fileSize: 2 * 1024 * 1024 } });
 const single = uploads.single("profilepic");
-const multi = uploads.array("photos", 3);
+const multi = uploads.array("image", 3);
 
 function multiUpload(req, res, next) {
   multi(req, res, (err) => {
+    console.log(req.file);
     if (err && err.code === "LIMIT_FILE_SIZE") {
       return res.status(400).json({ pesan: "file melebihi size" });
     }

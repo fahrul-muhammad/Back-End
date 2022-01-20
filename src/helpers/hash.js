@@ -13,4 +13,9 @@ hash.validatePassword = async (password, hashPass) => {
   return result;
 };
 
+// hash.round = async (password) => {
+//   const result = bcrypt.(password);
+//   return result;
+// };
+
 module.exports = hash;

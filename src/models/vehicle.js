@@ -1,10 +1,13 @@
 const database = require("../config/database");
 const mysql = require("mysql");
+const { query } = require("express");
+const { param } = require("../routers/vehicle");
+const { path } = require("express/lib/application");
 const vehicle = {};
 
 vehicle.getAllPaginated = async (query) => {
   return new Promise((resolve, reject) => {
-    let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category"
+    let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category",vehicle.image AS "photos", location AS "lokasi"
   FROM vehicle_rental.vehicle
   JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id`;
     const statement = [];
@@ -50,7 +53,7 @@ vehicle.getAllPaginated = async (query) => {
 
 vehicle.search = (keyword) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category" 
+    const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category", image as "Image", location
     FROM vehicle_rental.vehicle
     JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id
     WHERE vehicle.name LIKE ?`;
@@ -63,9 +66,9 @@ vehicle.search = (keyword) => {
 
 vehicle.create = (data) => {
   return new Promise((resolve, reject) => {
-    const { name, price, category } = data;
-    const sqlQuery = `INSERT INTO vehicle_rental.vehicle  SET name=?,price=?,category=?`;
-    database.query(sqlQuery, [name, price, category], (err, result) => {
+    const sqlQuery = `INSERT INTO vehicle_rental.vehicle
+    SET ?`;
+    database.query(sqlQuery, [data], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -83,39 +86,68 @@ vehicle.delet = (data) => {
   });
 };
 
-vehicle.update = (data) => {
+vehicle.update = (data, id) => {
   return new Promise((resolve, reject) => {
     const { name, price, category, id } = data;
     const sqlQuery = `
     UPDATE vehicle_rental.vehicle
-    SET vehicle.name = ? , vehicle.price = ?, vehicle.category = ? 
+    SET ?
     WHERE vehicle.id = ?`;
-    database.query(sqlQuery, [name, price, category, id], (err, result) => {
-      console.log(name, price, category, id);
+    database.query(sqlQuery, [data, id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
   });
 };
 
-vehicle.searchByCategory = (category) => {
+vehicle.searchByCategory = (requirement) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category" 
+    let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category",vehicle.image AS "photos", location AS "lokasi"
       FROM vehicle_rental.vehicle 
       JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id
       WHERE vehicle_category.name = ?`;
-    database.query(sqlQuery, [category], (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
+
+    const statement = [requirement.category];
+
+    const countQuery = `SELECT COUNT(*) AS "count" FROM vehicle_rental.vehicle 
+    JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id
+    WHERE vehicle_category.name = ?`;
+
+    database.query(countQuery, statement, (err, result) => {
+      if (err) return reject({ status: 500, err });
+      const { page, limit } = requirement.query;
+      const pages = page ? parseInt(page) : 0;
+      const limits = limit ? parseInt(limit) : 10;
+      const count = result[0].count;
+
+      if (page && limit) {
+        sqlQuery += ` ORDER BY vehicle.id ASC LIMIT ?,?`;
+        const offset = (pages - 1) * limits;
+        console.log(offset);
+        statement.push(offset, limits);
+      }
+
+      const meta = {
+        next: pages == Math.ceil(count / limits) ? null : `/vehicle/${requirement.category}?page=${pages + 1}&limit=${limits}`,
+        prev: pages == 1 ? null : `/vehicle/${requirement.category}?page=${pages - 1}&limit=${limits}`,
+        count,
+      };
+      database.query(sqlQuery, statement, (err, result) => {
+        if (err) return reject(err);
+        resolve({ status: 200, result: { data: result, meta } });
+      });
     });
   });
 };
 
-vehicle.vehicleImg = (pathFile) => {
+vehicle.vehicleImg = (pathFile, id) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `INSERT INTO vehicle_rental.vehicle_img (path_file) VALUES (?)`;
-    database.query(sqlQuery, [pathFile], (err, result) => {
+    const sqlQuery = `UPDATE vehicle_rental.vehicle
+    SET vehicle.image = ?
+    WHERE vehicle.id = ?`;
+    database.query(sqlQuery, [pathFile, id], (err, result) => {
       if (err) return reject(err);
+      console.log(err);
       resolve({ pesan: "berhasil meng unggah gambar", result });
     });
   });

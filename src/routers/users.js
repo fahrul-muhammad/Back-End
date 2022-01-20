@@ -4,8 +4,9 @@ const controllers = require("../controllers/users");
 const middleware = require("../middlewares/validate");
 const upload = require("../middlewares/upload");
 
+usersRouter.get("/profile", controllers.GetProfile);
 usersRouter.get("/", middleware.ValidateRole(["1"]), controllers.GetAll);
-usersRouter.get("/:id", middleware.ValidateRole(["1"]), controllers.GetByid);
+usersRouter.get("/:id", /* middleware.ValidateRole(["1"]), */ controllers.GetByid);
 usersRouter.patch("/", upload.multerHandler, controllers.UpdateData);
 usersRouter.patch("/changePass", controllers.UpdatePass);
 usersRouter.delete("/:id", middleware.ValidateRole(["1"]), controllers.Delete);

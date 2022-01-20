@@ -28,13 +28,13 @@ Users.GetByid = (id) => {
   });
 };
 
-Users.UpdatePass = (id, password) => {
+Users.UpdatePass = (password, email) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `
         UPDATE vehicle_rental.users
         SET users.password =  ?
-        WHERE users.id = ?`;
-    database.query(sqlQuery, [password, id], (err, result) => {
+        WHERE users.email = ?`;
+    database.query(sqlQuery, [password, email], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });
@@ -70,6 +70,16 @@ Users.UpdateData = (data, id) => {
      SET ?
      WHERE users.id = ?`;
     database.query(sqlQuery, [data, id], (err, result) => {
+      if (err) reject(err);
+      resolve(result);
+    });
+  });
+};
+
+Users.GetProfile = (id) => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = "SELECT * FROM vehicle_rental.users WHERE users.id = ?";
+    database.query(sqlQuery, [id], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });
