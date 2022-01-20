@@ -8,8 +8,8 @@ const vehicle = {};
 vehicle.getAllPaginated = async (query) => {
   return new Promise((resolve, reject) => {
     let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category",vehicle.image AS "photos", location AS "lokasi"
-  FROM vehicle_rental.vehicle
-  JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id`;
+  FROM vehicle
+  JOIN vehicle_category ON vehicle.category = vehicle_category.id`;
     const statement = [];
     let order = query.order;
     let orderBy = "";
@@ -26,7 +26,7 @@ vehicle.getAllPaginated = async (query) => {
       sqlQuery += ` ORDER BY ? ? `;
       statement.push(mysql.raw(orderBy), mysql.raw(order));
     }
-    const countQuery = `SELECT COUNT(*) AS "count" from vehicle_rental.vehicle`;
+    const countQuery = `SELECT COUNT(*) AS "count" from vehicle`;
     database.query(countQuery, (err, result) => {
       if (err) return reject({ status: 500, err });
       const page = parseInt(query.page);
@@ -54,8 +54,8 @@ vehicle.getAllPaginated = async (query) => {
 vehicle.search = (keyword) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category", image as "Image", location
-    FROM vehicle_rental.vehicle
-    JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id
+    FROM vehicle
+    JOIN vehicle_category ON vehicle.category = vehicle_category.id
     WHERE vehicle.name LIKE ?`;
     database.query(sqlQuery, [keyword], (err, result) => {
       if (err) return reject(err);
@@ -66,7 +66,7 @@ vehicle.search = (keyword) => {
 
 vehicle.create = (data) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `INSERT INTO vehicle_rental.vehicle
+    const sqlQuery = `INSERT INTO vehicle
     SET ?`;
     database.query(sqlQuery, [data], (err, result) => {
       if (err) return reject(err);
@@ -78,7 +78,7 @@ vehicle.create = (data) => {
 vehicle.delet = (data) => {
   return new Promise((resolve, reject) => {
     const { id } = data;
-    const sqlQuery = `DELETE FROM vehicle_rental.vehicle WHERE vehicle.id = ?;`;
+    const sqlQuery = `DELETE FROM vehicle WHERE vehicle.id = ?;`;
     database.query(sqlQuery, [id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
@@ -90,7 +90,7 @@ vehicle.update = (data, id) => {
   return new Promise((resolve, reject) => {
     const { name, price, category, id } = data;
     const sqlQuery = `
-    UPDATE vehicle_rental.vehicle
+    UPDATE vehicle
     SET ?
     WHERE vehicle.id = ?`;
     database.query(sqlQuery, [data, id], (err, result) => {
@@ -103,14 +103,14 @@ vehicle.update = (data, id) => {
 vehicle.searchByCategory = (requirement) => {
   return new Promise((resolve, reject) => {
     let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category",vehicle.image AS "photos", location AS "lokasi"
-      FROM vehicle_rental.vehicle 
-      JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id
+      FROM vehicle 
+      JOIN vehicle_category ON vehicle.category = vehicle_category.id
       WHERE vehicle_category.name = ?`;
 
     const statement = [requirement.category];
 
-    const countQuery = `SELECT COUNT(*) AS "count" FROM vehicle_rental.vehicle 
-    JOIN vehicle_rental.vehicle_category ON vehicle.category = vehicle_category.id
+    const countQuery = `SELECT COUNT(*) AS "count" FROM vehicle 
+    JOIN vehicle_category ON vehicle.category = vehicle_category.id
     WHERE vehicle_category.name = ?`;
 
     database.query(countQuery, statement, (err, result) => {
@@ -142,7 +142,7 @@ vehicle.searchByCategory = (requirement) => {
 
 vehicle.vehicleImg = (pathFile, id) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `UPDATE vehicle_rental.vehicle
+    const sqlQuery = `UPDATE vehicle
     SET vehicle.image = ?
     WHERE vehicle.id = ?`;
     database.query(sqlQuery, [pathFile, id], (err, result) => {

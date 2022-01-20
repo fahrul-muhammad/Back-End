@@ -3,7 +3,7 @@ const auth = {};
 
 auth.SignUp = (body) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `INSERT INTO vehicle_rental.users SET ?`;
+    const sqlQuery = `INSERT INTO users SET ?`;
     database.query(sqlQuery, [body], (err, result) => {
       if (err) reject(err);
       resolve(result);
@@ -13,7 +13,7 @@ auth.SignUp = (body) => {
 
 auth.signIn = (email) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT * FROM vehicle_rental.users WHERE email = ?`;
+    const sqlQuery = `SELECT * FROM users WHERE email = ?`;
     database.query(sqlQuery, [email], (err, result) => {
       if (err) return reject({ status: 500, err });
       if (result.length == 0) resolve(false);

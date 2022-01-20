@@ -6,8 +6,8 @@ const { profilePic } = require("../controllers/users");
 Users.GetAll = () => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `SELECT users.id, users.name, users.email, users.phone_number, users.DoB, users.address, roles.name AS "role"
-    FROM vehicle_rental.users
-    INNER JOIN vehicle_rental.roles ON users.role_id = roles.id 
+    FROM users
+    INNER JOIN roles ON users.role_id = roles.id 
     ORDER BY users.id DESC`;
     database.query(sqlQuery, (err, result) => {
       if (err) reject(err);
@@ -19,7 +19,7 @@ Users.GetAll = () => {
 Users.GetByid = (id) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `SELECT * 
-    FROM vehicle_rental.users 
+    FROM users 
     WHERE users.id = ? `;
     database.query(sqlQuery, [id], (err, result) => {
       if (err) reject(err);
@@ -31,7 +31,7 @@ Users.GetByid = (id) => {
 Users.UpdatePass = (password, email) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `
-        UPDATE vehicle_rental.users
+        UPDATE users
         SET users.password =  ?
         WHERE users.email = ?`;
     database.query(sqlQuery, [password, email], (err, result) => {
@@ -44,7 +44,7 @@ Users.UpdatePass = (password, email) => {
 Users.Delete = (id) => {
   return new Promise((resolve, reject) => {
     const sqlQuery = `
-        DELETE FROM vehicle_rental.users WHERE users.id = ?;`;
+        DELETE FROM users WHERE users.id = ?;`;
     database.query(sqlQuery, [id], (err, result) => {
       if (err) reject(err);
       resolve(result);
@@ -54,7 +54,7 @@ Users.Delete = (id) => {
 
 Users.postImg = (path, id) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `UPDATE vehicle_rental.users
+    const sqlQuery = `UPDATE users
     SET users.profilepic = ?
     WHERE users.id = ?`;
     database.query(sqlQuery, [path, id], (err, result) => {
@@ -66,7 +66,7 @@ Users.postImg = (path, id) => {
 
 Users.UpdateData = (data, id) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `UPDATE vehicle_rental.users
+    const sqlQuery = `UPDATE users
      SET ?
      WHERE users.id = ?`;
     database.query(sqlQuery, [data, id], (err, result) => {
@@ -78,7 +78,7 @@ Users.UpdateData = (data, id) => {
 
 Users.GetProfile = (id) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = "SELECT * FROM vehicle_rental.users WHERE users.id = ?";
+    const sqlQuery = "SELECT * FROM users WHERE users.id = ?";
     database.query(sqlQuery, [id], (err, result) => {
       if (err) reject(err);
       resolve(result);
