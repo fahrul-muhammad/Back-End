@@ -27,10 +27,9 @@ vehicle.search = async (req, res) => {
 
 vehicle.create = async (req, res) => {
   try {
-    console.log(req.body);
     const data = req.body;
     const { filename } = req.files[0];
-    const image = "/" + filename;
+    const image = filename;
     data.image = image;
     const result = await models.create(data);
     return response.success(res, 200, result);
@@ -85,6 +84,16 @@ vehicle.vehicleImg = async (req, res) => {
     }
     console.log(dataImg);
     const result = await models.vehicleImg(dataImg, id);
+    return response.success(res, 200, result);
+  } catch (error) {
+    return response.err(res, 500, error);
+  }
+};
+
+vehicle.getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await models.getById(id);
     return response.success(res, 200, result);
   } catch (error) {
     return response.err(res, 500, error);

@@ -1,8 +1,5 @@
 const database = require("../config/database");
 const mysql = require("mysql");
-const { query } = require("express");
-const { param } = require("../routers/vehicle");
-const { path } = require("express/lib/application");
 const vehicle = {};
 
 vehicle.getAllPaginated = async (query) => {
@@ -149,6 +146,18 @@ vehicle.vehicleImg = (pathFile, id) => {
       if (err) return reject(err);
       console.log(err);
       resolve({ pesan: "berhasil meng unggah gambar", result });
+    });
+  });
+};
+
+vehicle.getById = (id) => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = ` SELECT * 
+    FROM vehicle
+    WHERE vehicle.id = ?`;
+    database.query(sqlQuery, [id], (err, result) => {
+      if (err) return reject(err);
+      resolve({ pesan: "berhasil mengambil data", result });
     });
   });
 };

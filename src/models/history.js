@@ -19,7 +19,7 @@ history.getall = () => {
 // popular vehicle by rating
 history.GetPopular = () => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT vehicle.name AS "Kendaraan", COUNT(history.vehicle_id) AS "Jumlah pengguna", AVG(history.rating) AS " rata-rata rating pengguna"
+    const sqlQuery = `SELECT vehicle.name AS "Kendaraan", COUNT(history.vehicle_id) AS "Jumlah pengguna", AVG(history.rating) AS " rata-rata rating pengguna", vehicle.location AS "lokasi", vehicle.image AS "photo"
     FROM history
     JOIN vehicle ON vehicle.id = history.vehicle_id
     GROUP BY vehicle_id

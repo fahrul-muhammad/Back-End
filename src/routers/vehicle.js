@@ -6,6 +6,8 @@ const upload = require("../middlewares/upload");
 
 // Get All data Vehicle from database
 vehicleRouter.get("/", valid.ValidateRole(["1", "2", "3"]), controllers.getall);
+// GET BY ID
+vehicleRouter.get("/detail/:id", controllers.getById);
 // search by keyword
 vehicleRouter.get("/search", valid.ValidateRole(["1", "2", "3"]), controllers.search);
 // POST NEW VEHICLE
