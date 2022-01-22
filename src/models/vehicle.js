@@ -53,7 +53,8 @@ vehicle.search = (keyword) => {
     const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category", image as "Image", location
     FROM vehicle
     JOIN vehicle_category ON vehicle.category = vehicle_category.id
-    WHERE vehicle.name LIKE ?`;
+    WHERE vehicle.name LIKE ?
+    ORDER BY vehicle.name ASC`;
     database.query(sqlQuery, [keyword], (err, result) => {
       if (err) return reject(err);
       resolve(result);
@@ -152,8 +153,9 @@ vehicle.vehicleImg = (pathFile, id) => {
 
 vehicle.getById = (id) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = ` SELECT * 
+    const sqlQuery = `SELECT vehicle.id, vehicle.name,vehicle.price,vehicle_category.name AS "category", vehicle.image AS "image", vehicle.location AS "location", vehicle.stock AS "stock", vehicle.description AS "description"
     FROM vehicle
+    JOIN vehicle_category ON vehicle.category = vehicle_category.id
     WHERE vehicle.id = ?`;
     database.query(sqlQuery, [id], (err, result) => {
       if (err) return reject(err);

@@ -1,5 +1,6 @@
 const models = require("../models/history");
 const response = require("../helpers/response");
+const jwt = require("jsonwebtoken");
 const history = {};
 
 history.getall = async (req, res) => {
@@ -44,6 +45,18 @@ history.delet = async (req, res) => {
     return response.success(res, 200, result);
   } catch (error) {
     return response.err(res, 500, error);
+  }
+};
+
+history.myHistory = async (req, res) => {
+  try {
+    const { token } = req.headers;
+    const { id } = jwt.decode(token);
+    console.log(id);
+    const result = await models.myHistory(id);
+    return response.success(res, 200, result);
+  } catch (error) {
+    return response.err(res, 500, { error: error, pesan: "terjadi kesalahan" });
   }
 };
 
