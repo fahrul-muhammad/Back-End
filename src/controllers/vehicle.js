@@ -32,7 +32,7 @@ vehicle.create = async (req, res) => {
     const image = filename;
     data.image = image;
     const result = await models.create(data);
-    return response.success(res, 200, result);
+    return response.success(res, 200, { pesan: "berhasil menambahkan", id: result.insertId });
   } catch (error) {
     console.log(error);
     return response.err(res, 500, error);
@@ -50,11 +50,29 @@ vehicle.delet = async (req, res) => {
 
 vehicle.update = async (req, res) => {
   try {
-    const id = req.params;
+    const img = req.files;
+    const { id } = req.params;
     const data = req.body;
+    for (let i = 0; i < img.length; i++) {
+      const { filename } = req.files[i];
+      const image = filename;
+      data.image = image;
+    }
+    /* for (const key in data) {
+      if (Object.hasOwnProperty.call(data, key)) {
+        console.log(key);
+        const element = data[key];
+        if (element !== "") {
+          data[key] = element;
+        }
+      }
+    }
+    console.log(data); */
     const result = await models.update(data, id);
+    // console.log(result);
     return response.success(res, 200, result);
   } catch (error) {
+    console.log(error);
     return response.err(res, 500, error);
   }
 };

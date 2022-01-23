@@ -13,9 +13,9 @@ vehicleRouter.get("/search", valid.ValidateRole(["1", "2", "3"]), controllers.se
 // POST NEW VEHICLE
 vehicleRouter.post("/" /* , valid.ValidateRole(["1", "3"]) */, upload.multiUpload, controllers.create);
 // DELET
-vehicleRouter.delete("/:id", valid.ValidateRole("1"), controllers.delet);
+vehicleRouter.delete("/:id", valid.ValidateRole(["2"]), controllers.delet);
 // UPDATE
-vehicleRouter.patch("/update:id", upload.multiUpload, controllers.update);
+vehicleRouter.patch("/update/:id", upload.multiUpload, controllers.update);
 // vehicle image
 vehicleRouter.post("/vehicle_image/:id", valid.ValidateRole(["1", "3"]), upload.multiUpload, controllers.vehicleImg);
 // get all vehicle by category / pathparams

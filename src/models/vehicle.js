@@ -86,7 +86,6 @@ vehicle.delet = (data) => {
 
 vehicle.update = (data, id) => {
   return new Promise((resolve, reject) => {
-    const { name, price, category, id } = data;
     const sqlQuery = `
     UPDATE vehicle
     SET ?

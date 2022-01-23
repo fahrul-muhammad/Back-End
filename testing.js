@@ -46,6 +46,25 @@ JOIN vehicle_rental.vehicle_category ON vehicle.vehicle_category = vehicle_categ
 // const name = Date.now().toString();
 // console.log(name);
 
-let arrayOfStrings = ["1", "2"];
-var arrayOfNumbers = arrayOfStrings.map(Number);
-console.log(arrayOfNumbers);
+// let arrayOfStrings = ["1", "2"];
+// var arrayOfNumbers = arrayOfStrings.map(Number);
+// console.log(arrayOfNumbers);
+
+var obj = { a: "test1", b: "test2", c: "" };
+// var exists = Object.keys(obj).some(function (k) {
+//   console.log(obj[k]);
+//   return obj[k] === "";
+// });
+
+const data = {};
+
+for (const key in obj) {
+  if (Object.hasOwnProperty.call(obj, key)) {
+    const element = obj[key];
+    if (element !== "") {
+      data[key] = element;
+    }
+  }
+}
+
+console.log(data);
