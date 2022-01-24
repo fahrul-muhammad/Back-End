@@ -11,7 +11,7 @@ const logger = morgan(":method :url :status :res[content-length] - :response-tim
 //local port
 const port = process.env.PORT || 8000;
 
-const whitelist = ["http://example1.com", "http://localhost:3000", "https://circle-vehicle-rental.herokuapp.com", "https://nervous-pike-35f6fe.netlify.app"];
+const whitelist = ["http://example1.com", "http://localhost:3000", "https://circle-vehicle-rental.herokuapp.com", "https://nervous-pike-35f6fe.netlify.app", "https://circle-vehicle-rental.herokuapp.com"];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
