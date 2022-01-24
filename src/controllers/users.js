@@ -26,11 +26,8 @@ Users.GetByid = async (req, res) => {
 
 Users.UpdatePass = async (req, res) => {
   try {
-    const { password, email } = req.body;
-    // if (token == undefined) {
-    //   response.err(res, 400, "anda harus login terlebih dahulu");
-    // }
-    const pass = await helpers.hashPassword(password);
+    const { newPassword, email } = req.body;
+    const pass = await helpers.hashPassword(newPassword);
     const result = await models.UpdatePass(pass, email);
     return response.success(res, 200, result);
   } catch (error) {
