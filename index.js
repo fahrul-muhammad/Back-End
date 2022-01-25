@@ -11,7 +11,7 @@ const logger = morgan(":method :url :status :res[content-length] - :response-tim
 //local port
 const port = process.env.PORT || 8000;
 
-const whitelist = ["http://localhost:3000", "circle-vehicle-rental.herokuapp.com", "https://circle-vehicle-rental.netlify.app/", "https://circle-vehicle-rental.herokuapp.com"];
+/* const whitelist = ["http://localhost:3000", "circle-vehicle-rental.herokuapp.com", "https://circle-vehicle-rental.netlify.app/", "https://circle-vehicle-rental.herokuapp.com"];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -28,7 +28,7 @@ const corsOptions = {
 //   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
 // };
 // server.use(cors(corsOptions));
-server.use(cors(corsOptions));
+server.use(cors(corsOptions)); */
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(logger);
