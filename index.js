@@ -29,6 +29,7 @@ const corsOptions = {
 // };
 // server.use(cors(corsOptions));
 server.use(cors(corsOptions)); */
+server.use(cors());
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(logger);
