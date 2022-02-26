@@ -40,6 +40,7 @@ val.signIn = (req, res, next) => {
 val.ValidateRole = (roles = []) => {
   return (req, res, next) => {
     const { token } = req.headers;
+    console.log(token);
     let isAuth = false;
     if (token.length == 0)
       return res.status(401).json({

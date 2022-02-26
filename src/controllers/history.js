@@ -52,7 +52,6 @@ history.myHistory = async (req, res) => {
   try {
     const { token } = req.headers;
     const { id } = jwt.decode(token);
-    console.log(id);
     const result = await models.myHistory(id);
     return response.success(res, 200, result);
   } catch (error) {
