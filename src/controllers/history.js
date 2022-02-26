@@ -56,7 +56,7 @@ history.myHistory = async (req, res) => {
     const result = await models.myHistory(id);
     return response.success(res, 200, result);
   } catch (error) {
-    return response.err(res, 500, { error: error, pesan: "terjadi kesalahan" });
+    return response.err(res, 400, { error: error, pesan: "terjadi kesalahan" });
   }
 };
 
