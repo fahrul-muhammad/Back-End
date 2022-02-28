@@ -48,7 +48,7 @@ function testHandlers(req, res, next) {
     if (err) {
       console.log(err);
       console.log(res);
-      return res.status(400).json({ pesan: "terjadi error" });
+      return res.status(400).json(err);
     }
     next();
   });
