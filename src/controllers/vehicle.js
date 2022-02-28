@@ -28,6 +28,7 @@ vehicle.search = async (req, res) => {
 vehicle.create = async (req, res) => {
   try {
     const data = req.body;
+    console.log("FILES UPLOADED", req.files);
     const { filename } = req.files[0];
     const image = filename;
     data.image = image;
