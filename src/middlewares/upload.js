@@ -22,6 +22,7 @@ function fileFilter(req, file, cb) {
 const uploads = multer({ storage, fileFilter, limits: { fileSize: 2 * 1024 * 1024 } });
 const single = uploads.single("profilepic");
 const multi = uploads.array("image", 3);
+const test = uploads.single("file");
 
 function multiUpload(req, res, next) {
   multi(req, res, (err) => {
@@ -42,4 +43,15 @@ function multerHandler(req, res, next) {
   });
 }
 
-module.exports = { multerHandler, multiUpload };
+function testHandlers(req, res, next) {
+  test(req, res, (err) => {
+    if (err) {
+      console.log(err);
+      console.log(res);
+      return res.status(400).json({ pesan: "terjadi error" });
+    }
+    next();
+  });
+}
+
+module.exports = { multerHandler, multiUpload, testHandlers };

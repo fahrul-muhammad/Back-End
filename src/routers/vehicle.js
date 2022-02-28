@@ -21,4 +21,10 @@ vehicleRouter.post("/vehicle_image/:id", valid.ValidateRole(["1", "3"]), upload.
 // get all vehicle by category / pathparams
 vehicleRouter.get("/:category", /* valid.ValidateRole(["1", "2", "3"]), */ controllers.searchByCategory);
 
+vehicleRouter.post("/test", upload.testHandlers, (req, res) => {
+  console.log(req);
+  console.log(res);
+  return res.send("Hallo");
+});
+
 module.exports = vehicleRouter;
