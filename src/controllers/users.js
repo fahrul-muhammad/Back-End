@@ -37,6 +37,7 @@ Users.UpdatePass = async (req, res) => {
 
 Users.UpdateData = async (req, res) => {
   try {
+    console.log("REQ FROM BODY", req.body);
     const { token } = req.headers;
     if (token == undefined) {
       response.err(res, 400, "anda harus login terlebih dahulu");
