@@ -29,6 +29,8 @@ vehicle.create = async (req, res) => {
   try {
     const data = req.body;
     console.log("FILES UPLOADED", req.files);
+    console.log("SINGGLE FILE", req.file);
+    console.log("HEADERS", req.headers);
     const { filename } = req.files[0];
     const image = filename;
     data.image = image;

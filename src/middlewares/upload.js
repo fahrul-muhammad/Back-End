@@ -46,8 +46,8 @@ function multerHandler(req, res, next) {
 function testHandlers(req, res, next) {
   test(req, res, (err) => {
     if (err) {
-      console.log(err);
-      console.log(res);
+      // console.log(err);
+      console.log(req.headers);
       return res.status(400).json(err);
     }
     next();
