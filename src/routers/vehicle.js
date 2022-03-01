@@ -32,4 +32,14 @@ vehicleRouter.post("/test", upload.testHandlers, (req, res) => {
   }
 });
 
+vehicleRouter.post("/test2", upload.multiUpload, (req, res) => {
+  console.log(req.file);
+  console.log(req.files);
+  if (req.file !== undefined || req.files !== undefined) {
+    return res.send("masuk");
+  } else {
+    return res.send("nice try");
+  }
+});
+
 module.exports = vehicleRouter;
