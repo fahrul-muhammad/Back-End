@@ -22,10 +22,9 @@ vehicleRouter.post("/vehicle_image/:id", valid.ValidateRole(["1", "3"]), upload.
 vehicleRouter.get("/:category", /* valid.ValidateRole(["1", "2", "3"]), */ controllers.searchByCategory);
 
 vehicleRouter.post("/test", upload.testHandlers, (req, res) => {
-  //   console.log(req);
-  //   console.log(res);
   console.log(req.file);
-  if (req.file !== undefined) {
+  console.log(req.files);
+  if (req.file !== undefined || req.files !== undefined) {
     return res.send("masuk");
   } else {
     return res.send("nice try");
