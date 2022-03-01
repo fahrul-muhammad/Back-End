@@ -37,6 +37,7 @@ function multiUpload(req, res, next) {
 
 function multerHandler(req, res, next) {
   single(req, res, (err) => {
+    console.log(err);
     if (err && err.code === "LIMIT_FILE_SIZE") {
       return res.status(400).json({ pesan: "file melebihi size" });
     }
