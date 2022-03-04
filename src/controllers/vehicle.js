@@ -1,5 +1,6 @@
 const models = require("../models/vehicle");
 const response = require("../helpers/response");
+const jwt = require("jsonwebtoken");
 const vehicle = {};
 
 vehicle.getall = async (req, res) => {
@@ -28,9 +29,10 @@ vehicle.search = async (req, res) => {
 vehicle.create = async (req, res) => {
   try {
     const data = req.body;
-    console.log("FILES UPLOADED", req.files);
-    console.log("SINGGLE FILE", req.file);
     console.log("HEADERS", req.headers);
+    const { token } = req.headers;
+    const { id } = jwt.decode(token);
+    data.user_id = id;
     const { filename } = req.files[0];
     const image = filename;
     data.image = image;
@@ -115,6 +117,18 @@ vehicle.getById = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await models.getById(id);
+    return response.success(res, 200, result);
+  } catch (error) {
+    return response.err(res, 500, error);
+  }
+};
+
+vehicle.getByUserId = async (req, res) => {
+  try {
+    const { token } = req.headers;
+    console.log(jwt.decode(token));
+    const { id } = jwt.decode(token);
+    const result = await models.getByUserId(id);
     return response.success(res, 200, result);
   } catch (error) {
     return response.err(res, 500, error);

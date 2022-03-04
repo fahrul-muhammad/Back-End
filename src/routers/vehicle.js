@@ -3,6 +3,7 @@ const vehicleRouter = express.Router();
 const controllers = require("../controllers/vehicle");
 const valid = require("../middlewares/validate");
 const upload = require("../middlewares/upload");
+const vehicle = require("../controllers/vehicle");
 
 // Get All data Vehicle from database
 vehicleRouter.get("/", valid.ValidateRole(["1", "2", "3"]), controllers.getall);
@@ -11,7 +12,8 @@ vehicleRouter.get("/detail/:id", controllers.getById);
 // search by keyword
 vehicleRouter.get("/search", valid.ValidateRole(["1", "2", "3"]), controllers.search);
 // POST NEW VEHICLE
-vehicleRouter.post("/" /* , valid.ValidateRole(["1", "3"]) */, upload.multiUpload, controllers.create);
+vehicleRouter.get("/myvehicle", valid.ValidateRole(["1", "3"]), controllers.getByUserId);
+vehicleRouter.post("/", valid.ValidateRole(["1", "3"]), upload.multiUpload, controllers.create);
 // DELET
 vehicleRouter.delete("/:id", valid.ValidateRole(["2"]), controllers.delet);
 // UPDATE
@@ -20,6 +22,7 @@ vehicleRouter.patch("/update/:id", upload.multiUpload, controllers.update);
 vehicleRouter.post("/vehicle_image/:id", valid.ValidateRole(["1", "3"]), upload.multiUpload, controllers.vehicleImg);
 // get all vehicle by category / pathparams
 vehicleRouter.get("/:category", /* valid.ValidateRole(["1", "2", "3"]), */ controllers.searchByCategory);
+// GET VEHICLE BY USER ID
 
 vehicleRouter.post("/test", upload.testHandlers, (req, res) => {
   console.log(req.file);
