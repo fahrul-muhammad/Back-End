@@ -76,7 +76,8 @@ history.myHistory = (id) => {
     INNER JOIN users ON history.user_id = users.id
     INNER JOIN vehicle ON history.vehicle_id = vehicle.id
     INNER JOIN status ON history.status_id = status.id
-    WHERE users.id = ? `;
+    WHERE users.id = ? 
+    ORDER BY id DESC`;
     database.query(sqlQuery, [id], (err, result) => {
       if (err) return reject(err);
       resolve(result);

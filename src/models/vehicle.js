@@ -100,7 +100,7 @@ vehicle.update = (data, id) => {
 vehicle.searchByCategory = (requirement) => {
   return new Promise((resolve, reject) => {
     let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category",vehicle.image AS "photos", location AS "lokasi", vehicle.user_id
-      FROM vehicle 
+      FROM vehicle
       JOIN vehicle_category ON vehicle.category = vehicle_category.id
       WHERE vehicle_category.name = ?`;
 
