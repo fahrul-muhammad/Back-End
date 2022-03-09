@@ -58,6 +58,8 @@ vehicle.update = async (req, res) => {
     const img = req.files;
     const { id } = req.params;
     const data = req.body;
+    const price = req.body.price;
+    data.price = parseInt(price);
     for (let i = 0; i < img.length; i++) {
       const { filename } = req.files[i];
       const image = filename;
