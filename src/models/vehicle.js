@@ -143,7 +143,7 @@ vehicle.searchByCategory = ({ category, query }) => {
 
       const meta = {
         next: pages == Math.ceil(count / limits) ? null : `/vehicle/${category}?page=${pages + 1}&limit=${limits}&order=${order}&sorting${orderBy}`,
-        prev: pages == 1 ? null : `/vehicle/${category}?page=${pages - 1}&limit=${limits}&order=${order}&sorting${orderBy}`,
+        prev: pages == 1 ? null : `/vehicle/${category}?page=${pages - 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
         count,
       };
       database.query(sqlQuery, statement, (err, result) => {
