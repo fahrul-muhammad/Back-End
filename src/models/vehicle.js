@@ -109,7 +109,7 @@ vehicle.searchByCategory = ({ category, query }) => {
     let order = query.order ? query.order : "asc";
 
     if (query.sorting === undefined) {
-      query.sorting = "name";
+      query.sorting = "id";
     }
 
     if (query.sorting && query.sorting.toLowerCase() == "name") orderBy = "vehicle.name";
