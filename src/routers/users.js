@@ -11,5 +11,6 @@ usersRouter.patch("/", upload.multerHandler, controllers.UpdateData);
 usersRouter.patch("/changePass", controllers.UpdatePass);
 usersRouter.delete("/:id", middleware.ValidateRole(["1"]), controllers.Delete);
 usersRouter.patch("/profilepic", upload.multerHandler, controllers.profilePic);
+usersRouter.patch("/setfirebasetoken", controllers.setToken);
 
 module.exports = usersRouter;

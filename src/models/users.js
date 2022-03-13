@@ -86,4 +86,16 @@ Users.GetProfile = (id) => {
   });
 };
 
+Users.setFireBaseToken = (id, token) => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `UPDATE users
+    SET ?
+    WHERE users.id = ?`;
+    database.query(sqlQuery, [token, id], (err, result) => {
+      if (err) reject(err);
+      resolve(result);
+    });
+  });
+};
+
 module.exports = Users;

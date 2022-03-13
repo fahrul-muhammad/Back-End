@@ -111,4 +111,20 @@ Users.GetProfile = async (req, res) => {
   }
 };
 
+Users.setToken = async (req, res) => {
+  try {
+    const { token } = req.headers;
+    const userData = jwt.decode(token);
+    const { id } = userData;
+    const fire_base_token = req.body;
+    const result = await models.setFireBaseToken(id, fire_base_token);
+    return response.success(res, 200, {
+      pesan: "Success Set Fire Base Token",
+      added_token: req.body.fire_base_token,
+    });
+  } catch (error) {
+    return response.err(res, 500, error);
+  }
+};
+
 module.exports = Users;
