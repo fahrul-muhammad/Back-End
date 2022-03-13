@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mainRouter = require("./src/routers/main.js");
 const cors = require("cors");
+const key = require("./private/vehiclerental-dbb73-firebase-adminsdk-pwqta-a05730c00f.json");
 
 const server = express();
 const morgan = require("morgan");
@@ -29,6 +30,7 @@ const corsOptions = {
 // };
 // server.use(cors(corsOptions));
 server.use(cors(corsOptions)); */
+
 server.use(cors());
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
