@@ -12,7 +12,7 @@ historyRouter.get("/popular", controllers.GetPopular);
 // UPDATE HISTORY
 historyRouter.patch("/update", validate.ValidateRole(["1"]), controllers.update);
 // POST NEW HISTORY
-historyRouter.post("/", validate.ValidateRole(["1", "2"]), controllers.create);
+historyRouter.post("/", validate.ValidateRole(["1", "2", "3"]), controllers.create);
 // DELET HISTORY
 historyRouter.delete("/:id", validate.ValidateRole(["1"]), controllers.delet);
 

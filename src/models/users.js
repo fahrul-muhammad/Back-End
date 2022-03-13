@@ -1,7 +1,6 @@
 const database = require("../config/database");
 const Users = {};
 const mysql = require("mysql");
-const { profilePic } = require("../controllers/users");
 
 Users.GetAll = () => {
   return new Promise((resolve, reject) => {
