@@ -24,7 +24,7 @@ notif.send = async (req, res) => {
       pesan: "notification sent",
     });
   } catch (error) {
-    return res.statuys(500).json({
+    return res.status(500).json({
       pesan: "internal server error firebase",
       error,
     });
