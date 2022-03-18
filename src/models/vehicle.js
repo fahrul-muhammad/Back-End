@@ -54,8 +54,7 @@ vehicle.search = (keyword) => {
     const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category", image as "Image", location
     FROM vehicle
     JOIN vehicle_category ON vehicle.category = vehicle_category.id
-    WHERE vehicle.name LIKE ?
-    WHERE vehicle.inactive = "false"
+    WHERE vehicle.name LIKE ? AND vehicle.inactive = "false
     ORDER BY vehicle.name ASC`;
     database.query(sqlQuery, [keyword], (err, result) => {
       if (err) return reject(err);
@@ -91,8 +90,7 @@ vehicle.update = (data, id) => {
     const sqlQuery = `
     UPDATE vehicle
     SET ?
-    WHERE vehicle.id = ?
-    WHERE vehicle.inactive = "false"`;
+    WHERE vehicle.id = ? AND vehicle.inactive = "false`;
     database.query(sqlQuery, [data, id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
@@ -105,8 +103,7 @@ vehicle.searchByCategory = ({ category, query }) => {
     let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price", vehicle_category.name AS "Category",vehicle.image AS "photos", location AS "lokasi", vehicle.user_id
       FROM vehicle
       JOIN vehicle_category ON vehicle.category = vehicle_category.id
-      WHERE vehicle_category.name = ?
-      WHERE vehicle.inactive = "false"`;
+      WHERE vehicle_category.name = ? AND vehicle.inactive = "false`;
 
     const statement = [category];
     let orderBy = "";
@@ -186,8 +183,8 @@ vehicle.getById = (id) => {
     const sqlQuery = `SELECT vehicle.id, vehicle.name,vehicle.price,vehicle_category.name AS "category", vehicle.image AS "image", vehicle.location AS "location", vehicle.stock AS "stock", vehicle.description AS "description", vehicle.user_id
     FROM vehicle
     JOIN vehicle_category ON vehicle.category = vehicle_category.id
-    WHERE vehicle.id = ?
-    WHERE vehicle.inactive = "false"`;
+    WHERE vehicle.id = ? AND vehicle.inactive = "false"
+    `;
     database.query(sqlQuery, [id], (err, result) => {
       if (err) return reject(err);
       resolve({ pesan: "berhasil mengambil data", result });
@@ -200,8 +197,7 @@ vehicle.getByUserId = (id) => {
     const sqlQuery = `SELECT vehicle.id, vehicle.name,vehicle.price,vehicle_category.name AS "category", vehicle.image AS "image", vehicle.location AS "location", vehicle.stock AS "stock", vehicle.description AS "description", vehicle.user_id
     FROM vehicle
     JOIN vehicle_category ON vehicle.category = vehicle_category.id
-    WHERE vehicle.user_id = ?
-    WHERE vehicle.inactive = "false"`;
+    WHERE vehicle.user_id = ? AND vehicle.inactive = "false`;
     database.query(sqlQuery, [id], (err, result) => {
       if (err) return reject(err);
       resolve({ pesan: "Success Get Data", result });
