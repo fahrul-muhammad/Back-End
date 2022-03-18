@@ -138,4 +138,14 @@ vehicle.getByUserId = async (req, res) => {
   }
 };
 
+vehicle.softDelet = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await models.softDelet(id);
+    return response.success(res, 200, result);
+  } catch (error) {
+    return response.err(res, 500, error);
+  }
+};
+
 module.exports = vehicle;
