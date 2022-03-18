@@ -15,7 +15,7 @@ vehicleRouter.get("/search", valid.ValidateRole(["1", "2", "3"]), controllers.se
 vehicleRouter.get("/myvehicle", valid.ValidateRole(["1", "3"]), controllers.getByUserId);
 vehicleRouter.post("/", valid.ValidateRole(["1", "3"]), upload.multiUpload, controllers.create);
 // DELET
-vehicleRouter.delete("/:id", valid.ValidateRole(["2"]), controllers.delet);
+vehicleRouter.delete("/:id", valid.ValidateRole(["2"]), controllers.softDelet);
 // UPDATE
 vehicleRouter.patch("/update/:id", upload.multiUpload, controllers.update);
 // vehicle image
