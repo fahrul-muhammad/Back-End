@@ -41,7 +41,7 @@ exports.sendForgotPass = (email, data, pin) => {
                   color: #ffffff !important;
                   font-weight: bold;
                   text-align: center;
-                  background: #c82022;
+                  background: #ffcd61;
                   margin-left: 37%;
                   border-radius: 10px;
               }
@@ -51,7 +51,7 @@ exports.sendForgotPass = (email, data, pin) => {
           </style>
       </head>
       <body>
-          <h2>Hi, ${data.name}</h2>
+          <h2>Hallo, ${data.name}</h2>
           <p>Kami telah menerima permintaanmu untuk perubahan password akun VEHICLE-RENTAL.
             silahkan masukan code ${pin} pada saat reset password</p>
       </body>
