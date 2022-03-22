@@ -30,7 +30,7 @@ auth.signIn = async (req, res) => {
     }
     const isAuth = await hashPass.validatePassword(password, users.password);
     if (!isAuth) {
-      response.success(res, 401, { pesan: "password atau email salah" });
+      return response.err(res, 401, { pesan: "password atau email salah" });
     }
     const token = jwt.CreateTokens({ role: users.role_id, email, id });
     return response.success(res, 200, { status: "ok", pesan: "anda berhasil login", token: token, profilepic: profilepic, role: role_id });
