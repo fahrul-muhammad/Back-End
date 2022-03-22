@@ -45,20 +45,12 @@ auth.forgotPass = async (req, res) => {
     const users = await authModel.signIn(email);
     console.log("USERS", users);
     if (users.length <= 0) return response.err(res, 500, { pesan: "email notfound" });
-    const makeid = (length) => {
-      var result = "";
-      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      var charactersLength = characters.length;
-      for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      }
-      return result;
-    };
-    const pin = makeid(6);
-    const insertUsersPin = await authModel.insertPin(pin, email);
-    const after = await sendForgotPass(email, users);
-    console.log(after);
-    await authModel.resetPassword(pin);
+    let Pin = `${(Math.random() + 1).toString(36).substring(7)}`;
+    console.log("Pin", Pin.toUpperCase());
+    const insertPin = await authModel.insertPin(Pin, email);
+    console.log("INSERT PIN", insertPin);
+    await sendForgotPass(email, users, Pin);
+    await authModel.resetPassword(Pin);
     return response.success(res, 200, { pesan: "OTP are sending to your email, please check your email" });
   } catch (error) {
     console.log(error);

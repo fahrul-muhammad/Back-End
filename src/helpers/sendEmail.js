@@ -8,8 +8,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-exports.sendForgotPass = (email, data) => {
-  console.log(data);
+exports.sendForgotPass = (email, data, pin) => {
+  console.log("DATA", data);
   return new Promise((resolve, reject) => {
     const message = {
       from: process.env.EMAIL_USERNAME,
@@ -53,7 +53,7 @@ exports.sendForgotPass = (email, data) => {
       <body>
           <h2>Hi, ${data.name}</h2>
           <p>Kami telah menerima permintaanmu untuk perubahan password akun VEHICLE-RENTAL.
-            silahkan masukan code ${data.pin} pada saat reset password</p>
+            silahkan masukan code ${pin} pada saat reset password</p>
       </body>
       </html>`,
     };
