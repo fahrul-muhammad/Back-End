@@ -79,6 +79,7 @@ vehicle.search = ({ keyword, query }) => {
       const pages = page ? parseInt(page) : 0;
       const limits = limit ? parseInt(limit) : 10;
       const count = result[0].count;
+      console.log("RESULT COUNT", result);
 
       if (page && limit) {
         sqlQuery += ` LIMIT ? OFFSET ?`;
