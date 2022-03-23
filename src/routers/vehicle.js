@@ -4,6 +4,7 @@ const controllers = require("../controllers/vehicle");
 const valid = require("../middlewares/validate");
 const upload = require("../middlewares/upload");
 const vehicle = require("../controllers/vehicle");
+const { request } = require("express");
 
 // Get All data Vehicle from database
 vehicleRouter.get("/", valid.ValidateRole(["1", "2", "3"]), controllers.getall);

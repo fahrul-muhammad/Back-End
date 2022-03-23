@@ -69,4 +69,15 @@ auth.setNewPassword = async (req, res) => {
   }
 };
 
+auth.LogOut = async (req, res) => {
+  try {
+    const { token } = req.headers;
+    const result = await authModel.Logout(token);
+    console.log(result);
+    return response.success(res, 200, { pesan: "Log out Success, Thanks for comming" });
+  } catch (error) {
+    return response.err(res, 500, error);
+  }
+};
+
 module.exports = auth;

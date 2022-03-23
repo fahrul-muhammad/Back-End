@@ -55,4 +55,24 @@ auth.updateNewPassword = (password, pin) => {
   });
 };
 
+auth.checkToken = () => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `SELECT * FROM blacklist_token`;
+    database.query(sqlQuery, (err, result) => {
+      if (err) reject(err);
+      resolve(result);
+    });
+  });
+};
+
+auth.Logout = (token) => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `INSERT INTO blacklist_token SET blacklist_token = ? `;
+    database.query(sqlQuery, [token], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+
 module.exports = auth;

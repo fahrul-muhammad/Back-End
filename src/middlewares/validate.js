@@ -2,6 +2,7 @@ const val = {};
 const { is } = require("express/lib/request");
 const jwt = require("jsonwebtoken");
 const res = require("../helpers/response");
+const auth = require("../models/auth");
 
 val.signUp = (req, res, next) => {
   const { body } = req;
@@ -40,7 +41,7 @@ val.signIn = (req, res, next) => {
 val.ValidateRole = (roles = []) => {
   return (req, res, next) => {
     const { token } = req.headers;
-    console.log(token);
+    console.log("USER TOKEN", token);
     let isAuth = false;
     if (token.length == 0)
       return res.status(401).json({
@@ -69,6 +70,25 @@ val.ValidateRole = (roles = []) => {
       });
     }
   };
+};
+
+val.Token = async (req, res, next) => {
+  try {
+    const result = await auth.checkToken();
+    for (let i = 0; i < result.length; i++) {
+      if (result[i].blacklist_token !== req.headers.token) {
+        console.log(false);
+        next();
+      } else {
+        console.log(true);
+        return res.status(403).json({
+          pesan: "You already Log out,Log in again to enter this endpoint",
+        });
+      }
+    }
+  } catch (error) {
+    console.log("ADA ERROR", error);
+  }
 };
 
 module.exports = val;
