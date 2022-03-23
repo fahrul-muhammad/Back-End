@@ -86,8 +86,8 @@ vehicle.search = ({ keyword, query }) => {
         statement.push(limits, offset);
       }
       const meta = {
-        next: pages == Math.ceil(count / limits) ? null : `/vehicle/search?keyword=${query.keyword}&page=${pages + 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
-        prev: pages == 1 ? null : `/vehicle/search?keyword=${keyword}&page=${pages - 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
+        next: pages == Math.ceil(count / limits) ? null : `/vehicle/search?keyword=${query.keyword}&page=${pages + 1}&limit=${limits}&order=${order}&sorting=${query.sorting}`,
+        prev: pages == 1 ? null : `/vehicle/search?keyword=${keyword}&page=${pages - 1}&limit=${limits}&order=${order}&sorting=${query.sorting}`,
         count,
       };
       database.query(sqlQuery, statement, (err, result) => {
