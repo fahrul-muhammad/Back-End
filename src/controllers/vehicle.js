@@ -18,8 +18,8 @@ vehicle.search = async (req, res) => {
   try {
     const { query } = req;
     let keyword = "%%";
-    if (query.name) keyword = `%${query.name}%`;
-    const result = await models.search(keyword);
+    if (query.keyword) keyword = `%${query.keyword}%`;
+    const result = await models.search({ keyword, query });
     return response.success(res, 200, result);
   } catch (error) {
     return response.err(res, 500, error);

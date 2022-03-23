@@ -49,16 +49,60 @@ vehicle.getAllPaginated = async (query) => {
   });
 };
 
-vehicle.search = (keyword) => {
+vehicle.search = ({ keyword, query }) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category", image as "Image", location
+    let sqlQuery = `SELECT vehicle.id, vehicle.name AS "Vehicle_Name", price AS "Price",vehicle_category.name AS "Category", image as "Image", location
     FROM vehicle
     JOIN vehicle_category ON vehicle.category = vehicle_category.id
-    WHERE vehicle.name LIKE ? AND vehicle.inactive = "false
-    ORDER BY vehicle.name ASC`;
-    database.query(sqlQuery, [keyword], (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
+    WHERE vehicle.name LIKE ? AND vehicle.inactive = "false"
+    `;
+    /* ORDER BY vehicle.name ASC */
+    const statement = [keyword];
+    let orderBy = "";
+    let order = query.order ? query.order : "ASC";
+    if (query.sorting === undefined) {
+      query.sorting = "name";
+    }
+    if (query.sorting && query.sorting.toLowerCase() == "name") orderBy = "vehicle.name";
+    if (query.sorting && query.sorting.toLowerCase() == "price") orderBy = "vehicle.price";
+    if (query.sorting && query.sorting.toLowerCase() == "id") orderBy = "vehicle.id";
+
+    if (order && orderBy) {
+      sqlQuery += `ORDER BY ? ?`;
+      statement.push(mysql.raw(orderBy), mysql.raw(order));
+    }
+
+    console.log("ORDER BY ", orderBy);
+    console.log("ORDER", order);
+
+    const countQuery = `SELECT COUNT(*) AS "count" FROM vehicle 
+    WHERE vehicle.name = ?`;
+
+    database.query(countQuery, keyword, (err, result) => {
+      if (err) return reject({ status: 500, err });
+      const { page, limit } = query;
+      const pages = page ? parseInt(page) : 0;
+      const limits = limit ? parseInt(limit) : 10;
+      const count = result[0].count;
+
+      if (page && limit) {
+        sqlQuery += ` LIMIT ? OFFSET ?`;
+        const offset = (pages - 1) * limits;
+        statement.push(limits, offset);
+      }
+
+      console.log("STATEMENT", sqlQuery);
+      console.log("STATEMENT", statement);
+
+      const meta = {
+        next: pages == Math.ceil(count / limits) ? null : `/vehicle/search?keyword=${keyword}&page=${pages + 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
+        prev: pages == 1 ? null : `/vehicle/search?keyword=${keyword}&page=${pages - 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
+        count,
+      };
+      database.query(sqlQuery, statement, (err, result) => {
+        if (err) return reject(err);
+        resolve({ status: 200, result: { data: result, meta } });
+      });
     });
   });
 };
