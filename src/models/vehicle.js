@@ -56,7 +56,6 @@ vehicle.search = ({ keyword, query }) => {
     JOIN vehicle_category ON vehicle.category = vehicle_category.id
     WHERE vehicle.name LIKE ? AND vehicle.inactive = "false"
     `;
-    /* ORDER BY vehicle.name ASC */
     const statement = [keyword];
     let orderBy = "";
     let order = query.order ? query.order : "ASC";
@@ -71,10 +70,6 @@ vehicle.search = ({ keyword, query }) => {
       sqlQuery += `ORDER BY ? ?`;
       statement.push(mysql.raw(orderBy), mysql.raw(order));
     }
-
-    console.log("ORDER BY ", orderBy);
-    console.log("ORDER", order);
-
     const countQuery = `SELECT COUNT(*) AS "count" FROM vehicle 
     WHERE vehicle.name = ?`;
 
@@ -90,13 +85,9 @@ vehicle.search = ({ keyword, query }) => {
         const offset = (pages - 1) * limits;
         statement.push(limits, offset);
       }
-
-      console.log("STATEMENT", sqlQuery);
-      console.log("STATEMENT", statement);
-
       const meta = {
-        next: pages == Math.ceil(count / limits) ? null : `/vehicle/search?keyword=${keyword}&page=${pages + 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
-        prev: pages == 1 ? null : `/vehicle/search?keyword=${keyword}&page=${pages - 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
+        next: pages == Math.ceil(count / limits) ? null : `/vehicle/search?keyword=${query.keyword}&page=${pages + 1}&limit=${limits}&order=${order}&sorting=${orderBy}`,
+        prev: pages == 1 ? null : `/vehicle/search?keyword=${keyword}&page=${pages - 1}&limit=${limits}&order=${order}&sorting=${query.sorting}`,
         count,
       };
       database.query(sqlQuery, statement, (err, result) => {
