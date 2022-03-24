@@ -39,18 +39,11 @@ val.signIn = (req, res, next) => {
 // };
 
 val.ValidateRole = (roles = []) => {
-  return async (req, res, next) => {
-    const result = await auth.checkToken();
-    console.log(result);
+  return (req, res, next) => {
+    // const result = await auth.checkToken();
+    // console.log(result);
     const { token } = req.headers;
     console.log("USER TOKEN", token);
-    // for (let i = 0; i < result.lenth; i++) {
-    //   if (result[i].blacklist_token === token) {
-    //     return res.status(403).json({
-    //       pesan: "anda telah log out",
-    //     });
-    //   }
-    // }
     let isAuth = false;
     if (token.length == 0)
       return res.status(401).json({
@@ -84,17 +77,14 @@ val.ValidateRole = (roles = []) => {
 
 val.Token = async (req, res, next) => {
   try {
-    const result = await auth.checkToken();
-    for (let i = 0; i < result.length; i++) {
-      if (result[i].blacklist_token !== req.headers.token) {
-        console.log(false);
-        next();
-      } else {
-        console.log(true);
-        return res.status(403).json({
-          pesan: "You already Log out,Log in again to enter this endpoint",
-        });
-      }
+    const tokens = req.headers.token;
+    const result = await auth.checkToken(tokens);
+    if (result.length > 0) {
+      return res.status(403).json({
+        pesan: "You already Log out,Log in again to enter this endpoint",
+      });
+    } else {
+      next();
     }
   } catch (error) {
     console.log("ADA ERROR", error);

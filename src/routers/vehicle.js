@@ -11,7 +11,7 @@ vehicleRouter.get("/", valid.ValidateRole(["1", "2", "3"]), controllers.getall);
 // GET BY ID
 vehicleRouter.get("/detail/:id", controllers.getById);
 // search by keyword
-vehicleRouter.get("/search", valid.ValidateRole(["1", "2", "3"]), controllers.search);
+vehicleRouter.get("/search", valid.Token, valid.ValidateRole(["1", "2", "3"]), controllers.search);
 // POST NEW VEHICLE
 vehicleRouter.get("/myvehicle", valid.ValidateRole(["1", "3"]), controllers.getByUserId);
 vehicleRouter.post("/", valid.ValidateRole(["1", "3"]), upload.multiUpload, controllers.create);

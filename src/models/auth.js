@@ -55,10 +55,10 @@ auth.updateNewPassword = (password, pin) => {
   });
 };
 
-auth.checkToken = () => {
+auth.checkToken = (token) => {
   return new Promise((resolve, reject) => {
-    const sqlQuery = `SELECT * FROM blacklist_token`;
-    database.query(sqlQuery, (err, result) => {
+    const sqlQuery = `SELECT * FROM blacklist_token WHERE blacklist_token.blacklist_token = ?`;
+    database.query(sqlQuery, [token], (err, result) => {
       if (err) reject(err);
       resolve(result);
     });
