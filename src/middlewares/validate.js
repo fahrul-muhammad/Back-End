@@ -39,9 +39,18 @@ val.signIn = (req, res, next) => {
 // };
 
 val.ValidateRole = (roles = []) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
+    const result = await auth.checkToken();
+    console.log(result);
     const { token } = req.headers;
     console.log("USER TOKEN", token);
+    // for (let i = 0; i < result.lenth; i++) {
+    //   if (result[i].blacklist_token === token) {
+    //     return res.status(403).json({
+    //       pesan: "anda telah log out",
+    //     });
+    //   }
+    // }
     let isAuth = false;
     if (token.length == 0)
       return res.status(401).json({
@@ -63,6 +72,7 @@ val.ValidateRole = (roles = []) => {
       req.userInfo = payload;
     });
     if (isAuth) {
+      // val.Token(req, res, next);
       next();
     } else {
       return res.status(403).json({
